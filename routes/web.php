@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\Auth\AuthController;
+use App\Http\Controllers\Admin\Section\SectionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -35,3 +36,10 @@ Route::group([
     Route::post('/logout',[AuthController::class,'logout'])->name('logout');
 });
 
+Route::group([
+    'middleware' => ['web', 'auth'],
+    'prefix' => 'admin',
+    'as'=>'admin.',
+],function (){
+    Route::resource('/sections',SectionController::class);
+});
