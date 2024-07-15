@@ -2,7 +2,7 @@
 @section('title','لوحة التحكم')
 
 @section('css')
-     /*Owl-carousel css   */
+{{--     /*Owl-carousel css   */--}}
     <link href="{{ asset('assets/plugins/owl-carousel/owl.carousel.css') }}" rel="stylesheet" />
 {{--    <!-- Maps css -->--}}
     <link href="{{ asset('assets/plugins/jqvmap/jqvmap.min.css') }}" rel="stylesheet">
