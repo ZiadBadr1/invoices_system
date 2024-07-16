@@ -73,14 +73,14 @@
                                     <td>
 {{--                                        @can('تعديل قسم')--}}
                                             <a class="modal-effect btn btn-sm btn-info" data-effect="effect-scale"
-                                               data-id="{{ $section->id }}" data-section_name="{{ $section->name }}"
+                                               data-id="{{ $section->id }}" data-name="{{ $section->name }}"
                                                data-description="{{ $section->description }}" data-toggle="modal"
                                                href="#exampleModal2" title="تعديل"><i class="las la-pen"></i></a>
 {{--                                        @endcan--}}
 
 {{--                                        @can('حذف قسم')--}}
                                             <a class="modal-effect btn btn-sm btn-danger" data-effect="effect-scale"
-                                               data-id="{{ $section->id }}" data-section_name="{{ $section->section_name }}"
+                                               data-id="{{ $section->id }}" data-name="{{ $section->name }}"
                                                data-toggle="modal" href="#modaldemo9" title="حذف"><i
                                                         class="las la-trash"></i></a>
 {{--                                        @endcan--}}
@@ -153,7 +153,7 @@
                             <div class="form-group">
                                 <input type="hidden" name="id" id="id" value="">
                                 <label for="recipient-name" class="col-form-label">اسم القسم</label>
-                                <input class="form-control" name="name" id="edit_section_name" type="text">
+                                <input class="form-control" name="name" id="edit_name" type="text">
                             </div>
                             <div class="form-group">
                                 <label for="message-text" class="col-form-label">ملاحظات</label>
@@ -184,6 +184,10 @@
                         <div class="modal-body">
                             <p>هل انت متاكد من عملية الحذف ؟</p><br>
                             <input type="hidden" name="id" id="delete_id" value="">
+                            <div class="form-group">
+                                <label for="name">اسم القسم</label>
+                                <input type="text" name="name" id="name" class="form-control" value="" disabled>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">الغاء</button>
@@ -192,8 +196,7 @@
                     </form>
                 </div>
             </div>
-        </div>
-    <!-- Container closed -->
+        </div>    <!-- Container closed -->
     </div>
     <!-- main-content closed -->
 @endsection
@@ -223,12 +226,12 @@
         $('#exampleModal2').on('show.bs.modal', function(event) {
             var button = $(event.relatedTarget);
             var id = button.data('id');
-            var section_name = button.data('section_name');
+            var name = button.data('name');
             var description = button.data('description');
             var modal = $(this);
 
             modal.find('.modal-body #id').val(id);
-            modal.find('.modal-body #edit_section_name').val(section_name);
+            modal.find('.modal-body #edit_name').val(name);
             modal.find('.modal-body #edit_description').val(description);
 
             var form = modal.find('form');
@@ -241,17 +244,16 @@
         $('#modaldemo9').on('show.bs.modal', function(event) {
             var button = $(event.relatedTarget);
             var id = button.data('id');
-            var section_name = button.data('section_name');
+            var name = button.data('name');
             var modal = $(this);
 
             modal.find('.modal-body #delete_id').val(id);
-            modal.find('.modal-body #delete_section_name').val(section_name);
+            modal.find('.modal-body #name').val(name);
 
             var form = modal.find('form');
             form.attr('action', '/admin/sections/' + id);
         });
     </script>
-
 
 
 
