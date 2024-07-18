@@ -65,11 +65,9 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <?php $i = 0; ?>
-                        @foreach ($products as $Product)
-                                <?php $i++; ?>
+                        @foreach ($products as $key => $Product)
                             <tr>
-                                <td>{{ $i }}</td>
+                                <td>{{ $key+1 }}</td>
                                 <td>{{ $Product->name }}</td>
                                 <td>{{ $Product->section->name }}</td>
                                 <td>{{ $Product->description }}</td>

@@ -64,9 +64,9 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach ($sections as $section)
+                            @foreach ($sections as $key => $section)
                                 <tr>
-                                    <td>{{ $section->id }}</td>
+                                    <td>{{ $key+1 }}</td>
                                     <td>{{ $section->name }}</td>
                                     <td>{{ $section->description ?? "لا يوجد وصف" }}</td>
                                     <td>{{ $section->user->name }}</td>
