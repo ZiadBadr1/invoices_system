@@ -52,5 +52,6 @@ class InvoiceAttachmentController extends Controller
             return redirect()->back()->with('success', 'تم حذف الملف بنجاح');
         }
         return redirect()->back()->with('error', 'غير قادر علي إيجاد هذا الملف');
+
     }
 }
