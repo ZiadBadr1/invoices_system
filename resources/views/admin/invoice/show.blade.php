@@ -269,7 +269,7 @@
                 </div>
                 <form action="" method="post">
 
-                    {{ csrf_field() }}
+                    @csrf
                     <div class="modal-body">
                         <p class="text-center">
                         <h6 style="color:red"> هل انت متاكد من عملية حذف المرفق ؟</h6>

@@ -103,7 +103,7 @@
                                             <div class="dropdown-menu tx-13">
 {{--                                                @can('تعديل الفاتورة')--}}
                                                     <a class="dropdown-item"
-                                                       href="">تعديل
+                                                       href="{{route('admin.invoices.edit',$invoice)}}">تعديل
                                                         الفاتورة</a>
 {{--                                                @endcan--}}
 

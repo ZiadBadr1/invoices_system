@@ -53,6 +53,33 @@ class InvoicesService
         }
     }
 
+
+    /**
+     * @throws Exception
+     */
+    public function update(array $attributes, Invoices $invoice):Invoices
+    {
+        DB::beginTransaction();
+        try {
+            $attributes['user_id'] = auth()->id();
+
+            $invoice->update($attributes);
+
+            $detailsData = $this->getInvoiceDetail($attributes,$invoice);
+
+
+            $invoice->details()->create($detailsData);
+
+            DB::commit();
+            return $invoice;
+
+        }catch (Exception $e){}
+        {
+            DB::rollBack();
+            throw $e;
+        }
+    }
+
     private function getInvoiceDetail(array $attributes,$invoice): array
     {
         return [

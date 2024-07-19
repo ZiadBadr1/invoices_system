@@ -2,11 +2,9 @@
 
 namespace App\Http\Requests\Invoices;
 
-use App\Enums\InvoiceStatus;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\Enum;
 
-class StoreRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
     public function rules(): array
     {
@@ -22,11 +20,7 @@ class StoreRequest extends FormRequest
             'value_VAT' => ['required', 'numeric'],
             'rate_VAT' => ['required'],
             'total' => ['required', 'numeric'],
-            'status' => ['nullable', new Enum(InvoiceStatus::class)],
             'note' => ['nullable'],
-            'payment_date' => ['nullable', 'date'],
-            'deleted_at' => ['nullable', 'date'],
-            'attachment' => ['nullable', 'mimes:pdf,png,jpg,jpeg'],
         ];
     }
 
@@ -59,11 +53,9 @@ class StoreRequest extends FormRequest
             'discount' => 'الخصم',
             'value_VAT' => 'قيمة ضريبة القيمة المضافة',
             'rate_VAT' => 'نسبة ضريبة القيمة المضافة',
-            'total' => 'الاجمالي شامل الضريبة',
+            'total' => 'آلإجمالي شامل الضريبة',
             'status' => 'الحالة',
             'note' => 'ملاحظات',
-            'payment_date' => 'تاريخ الدفع',
-            'attachment.file' => 'يجب أن يكون المرفق ملفاً.',
-            'attachment.mimes' => 'يجب أن يكون المرفق بواحدة من الصيغ التالية: pdf, jpg, png, jpeg.',
         ];
-    }}
+    }
+}

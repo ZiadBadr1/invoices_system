@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Invoice;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Invoices\StoreRequest;
+use App\Http\Requests\Invoices\UpdateRequest;
 use App\Models\Invoices;
 use App\Models\Product;
 use App\Models\Section;
@@ -50,6 +51,24 @@ class InvoiceController extends Controller
             'details' => $invoice->details(),
             'attachments' => $invoice->attachments(),
         ]);
+    }
+
+    public function edit(Invoices $invoice)
+    {
+        return view('admin.invoice.edit',[
+            'invoice' => $invoice,
+            'sections' => Section::all(),
+        ]);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function update(UpdateRequest $request, Invoices $invoice)
+    {
+        $attributes = $request->validated();
+        $this->invoicesService->update($attributes,$invoice);
+        return redirect()->route('admin.invoices.index')->with('success','تم إنشاء الفاتورة بنجاح');
     }
     public function getProducts($id)
     {
