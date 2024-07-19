@@ -62,6 +62,8 @@ Route::group([
     'as'=>'admin.',
 ],function (){
     Route::resource('/invoices',InvoiceController::class);
+    Route::get('/invoices/update-status/{invoice}',[InvoiceController::class,'editStatus'])->name('invoices.edit-status');
+    Route::post('/invoices/update-status/{invoice}',[InvoiceController::class,'updateStatus'])->name('invoices.update-status');
     Route::get('/section/{id}', [InvoiceController::class, 'getProducts'])->name('section');
 });
 

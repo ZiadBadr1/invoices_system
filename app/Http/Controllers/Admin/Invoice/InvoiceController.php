@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Invoice;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Invoices\StoreRequest;
 use App\Http\Requests\Invoices\UpdateRequest;
+use App\Http\Requests\Invoices\UpdateStatusRequest;
 use App\Models\Invoices;
 use App\Models\Product;
 use App\Models\Section;
@@ -69,6 +70,30 @@ class InvoiceController extends Controller
         $attributes = $request->validated();
         $this->invoicesService->update($attributes,$invoice);
         return redirect()->route('admin.invoices.index')->with('success','تم إنشاء الفاتورة بنجاح');
+    }
+
+    public function editStatus(Invoices $invoice)
+    {
+        return view('admin.invoice.update-status',[
+            'invoice' => $invoice,
+            'sections' => Section::all(),
+        ]);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function updateStatus(UpdateStatusRequest $request, Invoices $invoice)
+    {
+        $attributes = $request->validated();
+        $this->invoicesService->update($attributes,$invoice);
+        return redirect()->route('admin.invoices.index')->with('success','تم إنشاء الفاتورة بنجاح');
+    }
+
+    public function destroy(Invoices $invoice)
+    {
+        $invoice->delete();
+        return redirect()->back()->with('success','تم أرشفة الفاتورة بنجاح');
     }
     public function getProducts($id)
     {

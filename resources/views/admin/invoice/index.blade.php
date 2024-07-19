@@ -116,7 +116,7 @@
 
 {{--                                                @can('تغير حالة الدفع')--}}
                                                     <a class="dropdown-item"
-                                                       href=""><i
+                                                       href="{{route('admin.invoices.edit-status',$invoice)}}"><i
                                                                 class=" text-success fas
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     fa-money-bill"></i>&nbsp;&nbsp;تغير
                                                         حالة
@@ -124,11 +124,11 @@
 {{--                                                @endcan--}}
 
 {{--                                                @can('ارشفة الفاتورة')--}}
-                                                    <a class="dropdown-item" href="#" data-invoice_id="{{ $invoice->id }}"
-                                                       data-toggle="modal" data-target="#Transfer_invoice"><i
-                                                                class="text-warning fas fa-exchange-alt"></i>&nbsp;&nbsp;نقل الي
-                                                        الارشيف</a>
-{{--                                                @endcan--}}
+                                                <a class="dropdown-item" href="#" data-invoice_id="{{ $invoice->id }}" data-toggle="modal" data-target="#Transfer_invoice">
+                                                    <i class="text-warning fas fa-exchange-alt"></i>&nbsp;&nbsp;نقل الي الارشيف
+                                                </a>
+
+                                                {{--                                                @endcan--}}
 {{----}}
 {{--                                                @can('طباعةالفاتورة')--}}
                                                     <a class="dropdown-item" href=""><i
@@ -181,35 +181,29 @@
 
 
     <!-- ارشيف الفاتورة -->
-    <div class="modal fade" id="Transfer_invoice" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">ارشفة الفاتورة</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <form action="" method="post">
-                    @method('DELETE')
-                    @csrf
-                </div>
-                <div class="modal-body">
-                    هل انت متاكد من عملية الارشفة ؟
-                    <input type="hidden" name="invoice_id" id="invoice_id" value="">
-                    <input type="hidden" name="id_page" id="id_page" value="2">
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">الغاء</button>
-                    <button type="submit" class="btn btn-success">تاكيد</button>
-                </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    </div>
+   <div class="modal fade" id="Transfer_invoice" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+       <div class="modal-dialog" role="document">
+           <div class="modal-content">
+               <div class="modal-header">
+                   <h5 class="modal-title" id="exampleModalLabel">ارشفة الفاتورة</h5>
+                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                       <span aria-hidden="true">&times;</span>
+                   </button>
+               </div>
+               <form id="transferForm" method="post">
+                   @method('DELETE')
+                   @csrf
+                   <div class="modal-body">
+                       هل انت متاكد من عملية الارشفة ؟
+                   </div>
+                   <div class="modal-footer">
+                       <button type="button" class="btn btn-secondary" data-dismiss="modal">الغاء</button>
+                       <button type="submit" class="btn btn-success">تاكيد</button>
+                   </div>
+               </form>
+           </div>
+       </div>
+   </div>
     <!-- row closed -->
     </div>
     <!-- Container closed -->
@@ -250,15 +244,20 @@
 
     </script>
 
-    <script>
-        $('#Transfer_invoice').on('show.bs.modal', function(event) {
-            var button = $(event.relatedTarget)
-            var invoice_id = button.data('invoice_id')
-            var modal = $(this)
-            modal.find('.modal-body #invoice_id').val(invoice_id);
-        })
+   <script>
+        $(document).ready(function() {
+            $('#Transfer_invoice').on('show.bs.modal', function(event) {
+                var button = $(event.relatedTarget); // Button that triggered the modal
+                var invoiceId = button.data('invoice_id'); // Extract info from data-* attributes
+                var formAction = "{{ route('admin.invoices.destroy', ':id') }}";
+                formAction = formAction.replace(':id', invoiceId);
 
+                var modal = $(this);
+                modal.find('#transferForm').attr('action', formAction);
+            });
+        });
     </script>
+
 
 
 

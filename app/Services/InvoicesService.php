@@ -83,12 +83,12 @@ class InvoicesService
     private function getInvoiceDetail(array $attributes,$invoice): array
     {
         return [
-            'user_id' => $attributes['user_id'],
-            'invoice_id' => $invoice->id,
-            'section_id' => $attributes['section_id'],
-            'product_id' => $attributes['product_id'],
-            'status' => InvoiceStatus::UNPAID->value,
-            'payment_date' => null,
+            'user_id' => $attributes['user_id'] ?? auth()->id(),
+            'invoice_id' => $invoice->id ?? null,
+            'section_id' => $attributes['section_id']?? $invoice->section_id ,
+            'product_id' => $attributes['product_id']?? $invoice->product_id ,
+            'status' => $attributes['status'] ?? InvoiceStatus::UNPAID->value,
+            'payment_date' => $attributes['payment_date'] ?? null,
             'note' => $attributes['note'] ?? null,
         ];
     }

@@ -133,7 +133,7 @@
                                                         <th>حالة الدفع</th>
                                                         <th>تاريخ الدفع </th>
                                                         <th>ملاحظات</th>
-                                                        <th>تاريخ الاضافة </th>
+                                                        <th>تاريخ ألأضافه </th>
                                                         <th>المستخدم</th>
                                                     </tr>
                                                     </thead>
@@ -145,7 +145,7 @@
                                                             <td>{{  $detail->product->name }}</td>
                                                             <td>{{ $detail->section->name }}</td>
                                                             @php
-                                                                $status = \App\Enums\InvoiceStatus::from($invoices->status);
+                                                                $status = \App\Enums\InvoiceStatus::from($detail->status);
                                                                 $color = \App\Enums\InvoiceStatus::getColor($status);
                                                                 $description = \App\Enums\InvoiceStatus::getDescription($status);
                                                             @endphp
@@ -154,7 +154,7 @@
                                                                 {{ $description }}
                                                             </td>
                                                             <td>{{  $detail->payment_date ?? "N/A" }}</td>
-                                                            <td>{{  $detail->note }}</td>
+                                                            <td>{{  $detail->note ?? "N/A" }}</td>
                                                             <td>{{  $detail->created_at->format('Y-m-d') }}</td>
                                                             <td>{{  $detail->user->name }}</td>
                                                         </tr>

@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Invoices;
 
+use App\Enums\InvoiceStatus;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 
 class UpdateRequest extends FormRequest
 {
@@ -20,8 +22,9 @@ class UpdateRequest extends FormRequest
             'value_VAT' => ['required', 'numeric'],
             'rate_VAT' => ['required'],
             'total' => ['required', 'numeric'],
+            'status' => ['nullable', new Enum(InvoiceStatus::class)],
             'note' => ['nullable'],
-        ];
+            'payment_date' => ['nullable', 'date'],        ];
     }
 
     public function authorize(): bool
