@@ -11,8 +11,8 @@ use App\Models\Product;
 use App\Models\Section;
 use App\Services\InvoicesService;
 use Exception;
-
-
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 
 class InvoiceController extends Controller
@@ -20,10 +20,18 @@ class InvoiceController extends Controller
     public function __construct(protected InvoicesService  $invoicesService)
     {}
 
-    public function index()
+    public function index(Request $request)
     {
-        return view('admin.invoice.index',[
-            'invoices' => Invoices::all()
+        $status = $request->query('status' );
+        $invoices = Invoices::query();
+
+        if ($status !== null) {
+            $invoices->where('status', $status);
+        }
+
+        return view('admin.invoice.index', [
+            'invoices' => $invoices->get(),
+            'status' => $status
         ]);
     }
 
@@ -94,6 +102,25 @@ class InvoiceController extends Controller
     {
         $invoice->delete();
         return redirect()->back()->with('success','تم أرشفة الفاتورة بنجاح');
+    }
+
+
+    public function trashed()
+    {
+        return view('admin.invoice.trashed', [
+            'invoices' => Invoices::onlyTrashed()->get(),
+        ]);
+    }
+
+    public function forceDelete($id)
+    {
+        $result = $this->invoicesService->forceDelete($id);
+
+        if ($result) {
+            return redirect()->back()->with('success', 'تم حذف الفاتورة نهائيا بنجاح');
+        }
+
+        return redirect()->back()->with('error', 'الفاتورة غير موجودة');
     }
     public function getProducts($id)
     {

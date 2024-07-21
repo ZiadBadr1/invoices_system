@@ -7,6 +7,7 @@ use App\Enums\InvoiceStatus;
 use App\Models\Invoices;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class InvoicesService
 {
@@ -101,6 +102,27 @@ class InvoicesService
             'file_path' => $attributes['attachment_path'],
             'user_id' => $attributes['user_id'],
         ];
+    }
+
+    public function forceDelete($id):bool
+    {
+        $invoice = Invoices::where('id', $id)->first();
+
+        if ($invoice) {
+            $invoiceNumber = $invoice->invoice_number;
+
+            $folderPath = 'public/invoice/' . $invoiceNumber;
+
+            if (Storage::exists($folderPath)) {
+                Storage::deleteDirectory($folderPath);
+            }
+
+            $invoice->forceDelete();
+
+            return true;
+        }
+
+        return false;
     }
 
 }

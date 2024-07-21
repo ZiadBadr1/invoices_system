@@ -1,5 +1,6 @@
 @extends('layouts.master')
 @section('title','لوحة التحكم')
+@section('active-dashboard','has-active')
 
 @section('css')
 {{--     /*Owl-carousel css   */--}}

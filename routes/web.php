@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\Invoice\InvoiceController;
 use App\Http\Controllers\Admin\InvoiceAttachment\InvoiceAttachmentController;
 use App\Http\Controllers\Admin\Product\ProductController;
 use App\Http\Controllers\Admin\Section\SectionController;
+use App\Http\Controllers\Admin\TrashedInvoices\TrashedInvoicesController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -59,12 +60,24 @@ Route::group([
 Route::group([
     'middleware' => ['web', 'auth'],
     'prefix' => 'admin',
-    'as'=>'admin.',
-],function (){
-    Route::resource('/invoices',InvoiceController::class);
-    Route::get('/invoices/update-status/{invoice}',[InvoiceController::class,'editStatus'])->name('invoices.edit-status');
-    Route::post('/invoices/update-status/{invoice}',[InvoiceController::class,'updateStatus'])->name('invoices.update-status');
+    'as' => 'admin.',
+], function () {
+    Route::resource('/invoices', InvoiceController::class);
+    Route::get('/invoices/update-status/{invoice}', [InvoiceController::class, 'editStatus'])->name('invoices.edit-status');
+    Route::post('/invoices/update-status/{invoice}', [InvoiceController::class, 'updateStatus'])->name('invoices.update-status');
     Route::get('/section/{id}', [InvoiceController::class, 'getProducts'])->name('section');
+    Route::delete('/invoices/force-delete/{invoice}', [InvoiceController::class, 'forceDelete'])->name('invoices.force-delete');
+});
+
+Route::group([
+    'middleware' => ['web', 'auth'],
+    'prefix' => 'admin',
+    'as' => 'admin.',
+], function () {
+    Route::get('/trashed-invoices', [TrashedInvoicesController::class, 'index'])->name('invoices.trashed');
+    Route::post('/invoices/restore/{invoice}', [TrashedInvoicesController::class, 'restore'])->name('invoices.restore');
+    Route::delete('/trashed-invoices/force-delete/{invoice}', [TrashedInvoicesController::class, 'forceDelete'])->name('trashed-invoices.force-delete');
+
 });
 
 Route::group([

@@ -1,5 +1,22 @@
 @extends('layouts.master')
-@section('title','قائمة الفواتير')
+@section('open-invoices', 'open')
+@section('title')
+    @if($status === null)
+        قائمة الفواتير
+    @elseif($status == \App\Enums\InvoiceStatus::PAID->value)
+        الفواتير المدفوعة
+    @elseif($status == \App\Enums\InvoiceStatus::UNPAID->value)
+        الفواتير الغير مدفوعة
+    @elseif($status == \App\Enums\InvoiceStatus::PARTIALLY_PAID->value)
+        الفواتير المدفوعة جزئيا
+    @endif
+@endsection
+
+@section('active-all-invoices', $status === 'all' ? 'active' : '')
+@section('active-paid-invoices', $status == \App\Enums\InvoiceStatus::PAID->value ? 'active' : '')
+@section('active-unpaid-invoices', $status == \App\Enums\InvoiceStatus::UNPAID->value ? 'active' : '')
+@section('active-partially-paid-invoices', $status == \App\Enums\InvoiceStatus::PARTIALLY_PAID->value ? 'active' : '')
+
 
 @section('css')
 {{--    /*<!-- Internal Data table css -->*/--}}
@@ -153,31 +170,30 @@
     </div>
 
     <!-- حذف الفاتورة -->
-    <div class="modal fade" id="delete_invoice" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">حذف الفاتورة</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <form action="" method="post">
-                    @method('DELETE')
-                    @csrf
-                </div>
-                <div class="modal-body">
-                    هل انت متاكد من عملية الحذف ؟
-                    <input type="hidden" name="invoice_id" id="invoice_id" value="">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">الغاء</button>
-                    <button type="submit" class="btn btn-danger">تاكيد</button>
-                </div>
-                </form>
-            </div>
-        </div>
-    </div>
+   <div class="modal fade" id="delete_invoice" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+       <div class="modal-dialog" role="document">
+           <div class="modal-content">
+               <div class="modal-header">
+                   <h5 class="modal-title" id="exampleModalLabel">حذف الفاتورة</h5>
+                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                       <span aria-hidden="true">&times;</span>
+                   </button>
+               </div>
+               <form id="deleteForm" method="post">
+                   @method('DELETE')
+                   @csrf
+                   <div class="modal-body">
+                       هل انت متاكد من عملية الحذف ؟
+                       <input type="hidden" name="invoice_id" id="invoice_id" value="">
+                   </div>
+                   <div class="modal-footer">
+                       <button type="button" class="btn btn-secondary" data-dismiss="modal">الغاء</button>
+                       <button type="submit" class="btn btn-danger">تاكيد</button>
+                   </div>
+               </form>
+           </div>
+       </div>
+   </div>
 
 
     <!-- ارشيف الفاتورة -->
@@ -236,11 +252,15 @@
 
     <script>
         $('#delete_invoice').on('show.bs.modal', function(event) {
-            var button = $(event.relatedTarget)
-            var invoice_id = button.data('invoice_id')
-            var modal = $(this)
-            modal.find('.modal-body #invoice_id').val(invoice_id);
-        })
+            var button = $(event.relatedTarget);
+            var invoiceId = button.data('invoice_id');
+            var formAction = "{{ route('admin.invoices.force-delete', ':id') }}";
+            formAction = formAction.replace(':id', invoiceId);
+
+            var modal = $(this);
+            modal.find('#deleteForm').attr('action', formAction);
+            modal.find('.modal-body #invoice_id').val(invoiceId);
+        });
 
     </script>
 
