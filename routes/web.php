@@ -67,6 +67,7 @@ Route::group([
     Route::post('/invoices/update-status/{invoice}', [InvoiceController::class, 'updateStatus'])->name('invoices.update-status');
     Route::get('/section/{id}', [InvoiceController::class, 'getProducts'])->name('section');
     Route::delete('/invoices/force-delete/{invoice}', [InvoiceController::class, 'forceDelete'])->name('invoices.force-delete');
+    Route::get('/invoices/print/{invoice}', [InvoiceController::class, 'print'])->name('invoices.print');
 });
 
 Route::group([

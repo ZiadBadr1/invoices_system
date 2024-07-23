@@ -127,4 +127,13 @@ class InvoiceController extends Controller
         $products = Product::where("section_id", $id)->pluck("name", "id");
         return json_encode($products);
     }
+
+
+    public function print(Invoices $invoice)
+    {
+        return view('admin.invoice.print',[
+            'invoice' => $invoice->load(['section','product']),
+            'total' => $invoice->amount_collection + $invoice->amount_commission,
+        ]);
+    }
 }

@@ -148,7 +148,7 @@
                                                 {{--                                                @endcan--}}
 {{----}}
 {{--                                                @can('طباعةالفاتورة')--}}
-                                                    <a class="dropdown-item" href=""><i
+                                                    <a class="dropdown-item" href="{{route('admin.invoices.print',$invoice)}}"><i
                                                                 class="text-success fas fa-print"></i>&nbsp;&nbsp;طباعة
                                                         الفاتورة
                                                     </a>
