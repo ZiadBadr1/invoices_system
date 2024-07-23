@@ -9,6 +9,7 @@ use App\Http\Requests\Invoices\UpdateStatusRequest;
 use App\Models\Invoices;
 use App\Models\Product;
 use App\Models\Section;
+use App\Notifications\AddInovice;
 use App\Services\InvoicesService;
 use Exception;
 use Illuminate\Http\Request;
@@ -48,7 +49,8 @@ class InvoiceController extends Controller
     public function store(StoreRequest $request)
     {
         $attributes = $request->validated();
-        $this->invoicesService->store($attributes);
+        $invoice  = $this->invoicesService->store($attributes);
+        auth()->user()->notify(new AddInovice($invoice));
         return redirect()->route('admin.invoices.index')->with('success','تم إنشاء الفاتورة بنجاح');
 
     }
