@@ -5,8 +5,10 @@ use App\Http\Controllers\Admin\Auth\AuthController;
 use App\Http\Controllers\Admin\Invoice\InvoiceController;
 use App\Http\Controllers\Admin\InvoiceAttachment\InvoiceAttachmentController;
 use App\Http\Controllers\Admin\Product\ProductController;
+use App\Http\Controllers\Admin\Role\RoleController;
 use App\Http\Controllers\Admin\Section\SectionController;
 use App\Http\Controllers\Admin\TrashedInvoices\TrashedInvoicesController;
+use App\Http\Controllers\Admin\User\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -90,4 +92,23 @@ Route::group([
     Route::get('download/{attachment}', [InvoiceAttachmentController::class, 'download'])->name('attachments.download');
     Route::delete('delete-file/{attachment}', [InvoiceAttachmentController::class, 'delete'])->name('attachments.delete');
 });
+
+Route::group([
+    'middleware' => ['web', 'auth'],
+    'prefix' => 'admin',
+    'as' => 'admin.',
+],function (){
+    Route::resource('/roles', RoleController::class);
+});
+
+
+Route::group([
+    'middleware' => ['web', 'auth'],
+    'prefix' => 'admin',
+    'as' => 'admin.',
+],function (){
+    Route::resource('/users', UserController::class);
+});
+
+
 
