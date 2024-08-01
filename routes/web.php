@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\Auth\AuthController;
 use App\Http\Controllers\Admin\Invoice\InvoiceController;
 use App\Http\Controllers\Admin\InvoiceAttachment\InvoiceAttachmentController;
 use App\Http\Controllers\Admin\Product\ProductController;
+use App\Http\Controllers\Admin\Reports\InvoicesController;
 use App\Http\Controllers\Admin\Role\RoleController;
 use App\Http\Controllers\Admin\Section\SectionController;
 use App\Http\Controllers\Admin\TrashedInvoices\TrashedInvoicesController;
@@ -108,6 +109,15 @@ Route::group([
     'as' => 'admin.',
 ],function (){
     Route::resource('/users', UserController::class);
+});
+
+Route::group([
+    'middleware' => ['web', 'auth'],
+    'prefix' => 'admin',
+    'as' => 'admin.',
+],function (){
+    Route::get('/reports/invoices', [InvoicesController::class,'index']);
+    Route::post('/reports/invoices', [InvoicesController::class,'searchInvoices'])->name('search_invoices');
 });
 
 
