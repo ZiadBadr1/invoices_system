@@ -246,7 +246,7 @@
                         dataType: "json",
                         success: function(data) {
                             console.log(data); // Check the response here
-                            $('select[name="product"]').empty();
+                            $('select[name="product_id"]').empty();
                             $.each(data, function(key, value) {
                                 $('select[name="product_id"]').append('<option value="' +
                                     key + '">' + value + '</option>');
