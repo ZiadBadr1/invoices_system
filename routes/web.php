@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\Auth\AuthController;
 use App\Http\Controllers\Admin\Invoice\InvoiceController;
 use App\Http\Controllers\Admin\InvoiceAttachment\InvoiceAttachmentController;
 use App\Http\Controllers\Admin\Product\ProductController;
+use App\Http\Controllers\Admin\Reports\CustomerController;
 use App\Http\Controllers\Admin\Reports\InvoicesController;
 use App\Http\Controllers\Admin\Role\RoleController;
 use App\Http\Controllers\Admin\Section\SectionController;
@@ -118,6 +119,8 @@ Route::group([
 ],function (){
     Route::get('/reports/invoices', [InvoicesController::class,'index']);
     Route::post('/reports/invoices', [InvoicesController::class,'searchInvoices'])->name('search_invoices');
+    Route::get('/reports/customer', [CustomerController::class,'index']);
+    Route::post('/reports/customer', [CustomerController::class,'searchCustomer'])->name('search_customer');
 });
 
 

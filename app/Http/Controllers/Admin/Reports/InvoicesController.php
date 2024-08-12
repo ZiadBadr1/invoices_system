@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Reports;
 
+use App\Actions\Search\TimeSearchAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Reports\Invoice\SearchRequest;
 use App\Models\Invoices;
@@ -43,7 +44,7 @@ class InvoicesController extends Controller
         }
 
         $query = Invoices::where('status', $attributes['type']);
-        $this->applyDateFilters($query, $attributes);
+        (new TimeSearchAction())->execute($query, $attributes);
 
         return $query->get();
     }
@@ -53,17 +54,7 @@ class InvoicesController extends Controller
         if (!isset($attributes['invoice_number'])) {
             return redirect()->back()->with('error', 'رقم الفاتورة مطلوب');
         }
-        return Invoices::where('invoice_number', $attributes['invoiceNumber'])->get();
+        return Invoices::where('invoice_number', $attributes['invoice_number'])->get();
     }
 
-    private function applyDateFilters($query, array $attributes): void
-    {
-        if (!empty($attributes['start_at']) && !empty($attributes['end_at'])) {
-            $query->whereBetween('invoice_date', [$attributes['start_at'], $attributes['end_at']]);
-        } elseif (!empty($attributes['start_at'])) {
-            $query->where('invoice_date', '>=', $attributes['start_at']);
-        } elseif (!empty($attributes['end_at'])) {
-            $query->where('invoice_date', '<=', $attributes['end_at']);
-        }
-    }
 }

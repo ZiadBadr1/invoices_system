@@ -9,5 +9,6 @@ class StoreImageAction
     public function execute(UploadedFile $image, $storingPath): bool|string
     {
         $fileName = $image->getClientOriginalName();
-        return $image->storeAs($storingPath, $fileName, 'public');    }
+        return $image->storeAs($storingPath, $fileName, 'public');
+    }
 }
